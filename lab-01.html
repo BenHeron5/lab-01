@@ -362,7 +362,7 @@ display: none;
 <pre class="r"><code># Do not edit this code chunk!
 library(tidyverse) </code></pre>
 <pre class="r"><code># Do not edit this code chunk!
-visitors &lt;- read_csv(&quot;data/UK-visitor-numbers.csv&quot;)</code></pre>
+visitors &lt;- read.csv(&quot;data/UK-visitor-numbers.csv&quot;)</code></pre>
 </div>
 <div id="wrangling-data" class="section level1">
 <h1>Wrangling Data</h1>
@@ -370,17 +370,28 @@ visitors &lt;- read_csv(&quot;data/UK-visitor-numbers.csv&quot;)</code></pre>
 <h2>Question 1</h2>
 <p><em>How many tourist attractions are there in the data set?</em></p>
 <pre class="r"><code>visitors %&gt;% count()</code></pre>
-<pre><code>## # A tibble: 1 × 1
-##       n
-##   &lt;int&gt;
-## 1   348</code></pre>
+<pre><code>##     n
+## 1 348</code></pre>
 <div id="exercise-a." class="section level3">
 <h3>Exercise a.</h3>
 <p><em>Create a frequency table of the number of tourist attractions in
 the data set by <code>region</code>.</em></p>
 <pre class="r"><code># Delete the comment &#39;#&#39; symbol at the start of the next line and complete the code. 
 
-#visitors %&gt;% count(_____)</code></pre>
+visitors %&gt;% count(region)</code></pre>
+<pre><code>##                      region  n
+## 1             East Midlands  9
+## 2           East of England 26
+## 3                    London 39
+## 4                North East 25
+## 5                North West 21
+## 6          Northern Ireland  9
+## 7                  Scotland 97
+## 8                South East 34
+## 9                South West 30
+## 10                    Wales  2
+## 11            West Midlands 35
+## 12 Yorkshire and the Humber 21</code></pre>
 </div>
 <div id="exercise-b." class="section level3">
 <h3>Exercise b.</h3>
@@ -388,45 +399,782 @@ the data set by <code>region</code>.</em></p>
 <code>setting</code>.</em></p>
 <pre class="r"><code># Delete the comment &#39;#&#39; symbol at the start of the next line and complete the code.
 
-#visitors %&gt;% count(_____, _____)</code></pre>
+visitors %&gt;% count(admission, region)</code></pre>
+<pre><code>##    admission                   region  n
+## 1    Charged          East of England  3
+## 2    Charged                   London  6
+## 3    Charged               North East  1
+## 4    Charged         Northern Ireland  1
+## 5    Charged                 Scotland  4
+## 6    Charged               South East  3
+## 7    Charged               South West  6
+## 8    Charged            West Midlands  8
+## 9    Charged Yorkshire and the Humber  6
+## 10      Free            East Midlands  2
+## 11      Free          East of England 11
+## 12      Free                   London 21
+## 13      Free               North East 11
+## 14      Free               North West 14
+## 15      Free         Northern Ireland  1
+## 16      Free                 Scotland 34
+## 17      Free               South East 10
+## 18      Free               South West  6
+## 19      Free            West Midlands 12
+## 20      Free Yorkshire and the Humber  6
+## 21   Members            East Midlands  7
+## 22   Members          East of England 12
+## 23   Members                   London 12
+## 24   Members               North East 13
+## 25   Members               North West  7
+## 26   Members         Northern Ireland  7
+## 27   Members                 Scotland 59
+## 28   Members               South East 21
+## 29   Members               South West 18
+## 30   Members                    Wales  2
+## 31   Members            West Midlands 15
+## 32   Members Yorkshire and the Humber  9</code></pre>
 </div>
 </div>
 <div id="question-2" class="section level2">
 <h2>Question 2</h2>
 <p><em>What are the variable data types?</em></p>
 <pre class="r"><code>class(visitors$n_2022)</code></pre>
-<pre><code>## [1] &quot;numeric&quot;</code></pre>
+<pre><code>## [1] &quot;integer&quot;</code></pre>
 <pre class="r"><code>visitors %&gt;% summarise_all(class)</code></pre>
-<pre><code>## # A tibble: 1 × 6
-##   attraction n_2021  n_2022  admission setting   region   
-##   &lt;chr&gt;      &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;     &lt;chr&gt;     &lt;chr&gt;    
-## 1 character  numeric numeric character character character</code></pre>
+<pre><code>##   attraction  n_2021  n_2022 admission   setting    region
+## 1  character integer integer character character character</code></pre>
 </div>
 <div id="question-3" class="section level2">
 <h2>Question 3</h2>
 <p><em>Which attraction had the most number of visitors in
 2022?</em></p>
 <pre class="r"><code>visitors %&gt;% arrange(desc(n_2022))</code></pre>
-<pre><code>## # A tibble: 348 × 6
-##    attraction                             n_2021 n_2022 admission setting region
-##    &lt;chr&gt;                                   &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;     &lt;chr&gt;   &lt;chr&gt; 
-##  1 The Crown Estate, Windsor Great Park   5.40e6 5.64e6 Free      O       South…
-##  2 Natural History Museum (South Kensing… 1.57e6 4.65e6 Free      I       London
-##  3 The British Museum                     1.33e6 4.10e6 Free      I       London
-##  4 Tate Modern                            1.16e6 3.88e6 Free      I       London
-##  5 Southbank Centre                       7.87e5 2.95e6 Free      I       London
-##  6 The National Gallery                   7.09e5 2.73e6 Free      I       London
-##  7 V&amp;A South Kensington                   8.58e5 2.37e6 Free      I       London
-##  8 Somerset House                         9.85e5 2.35e6 Free      M       London
-##  9 Science Museum                         9.56e5 2.33e6 Free      I       London
-## 10 Tower of London                        5.26e5 2.02e6 Members   M       London
-## # ℹ 338 more rows</code></pre>
+<pre><code>##                                               attraction  n_2021  n_2022
+## 1                   The Crown Estate, Windsor Great Park 5400000 5636844
+## 2              Natural History Museum (South Kensington) 1571413 4654608
+## 3                                     The British Museum 1327120 4097253
+## 4                                            Tate Modern 1156037 3883160
+## 5                                       Southbank Centre  786911 2947155
+## 6                                   The National Gallery  708924 2727119
+## 7                                   V&amp;A South Kensington  857742 2370261
+## 8                                         Somerset House  984978 2346580
+## 9                                         Science Museum  955873 2334930
+## 10                                       Tower of London  526379 2020121
+## 11                           National Museum of Scotland  660741 1973751
+## 12                             Royal Botanic Gardens Kew 1963171 1963885
+## 13                               Royal Museums Greenwich  686375 1628580
+## 14                                     RHS Garden Wisley 1410785 1494709
+## 15                                     Royal Albert Hall  531407 1449486
+## 16                                      Edinburgh Castle  423866 1346168
+## 17                             Scottish National Gallery  302929 1277230
+## 18                                   St Paul&#39;s Cathedral  278413 1193888
+## 19                                      Riverside Museum  312386 1173242
+## 20                                       British Library  403312 1149070
+## 21                                     Westminster Abbey  163357 1063063
+## 22                                        ZSL London Zoo  694060 1045289
+## 23                        Royal Botanic Garden Edinburgh  647698  996597
+## 24                                            Stonehenge  334087  977316
+## 25                                          Tate Britain  525144  913395
+## 26                    Kelvingrove Art Gallery and Museum  288212  891114
+## 27                             Roman Baths and Pump Room  351655  851854
+## 28                                              Longleat  727800  814263
+## 29                             Moors Valley Country Park  803867  810707
+## 30                                       Blenheim Palace  599601  806806
+## 31                           Horniman Museum and Gardens  653200  790067
+## 32                                        Beamish Museum  593985  773814
+## 33                                     ZSL Whipsnade Zoo  669574  760087
+## 34                               Ashmolean Museum Oxford  212497  728006
+## 35                          Portsmouth Historic Dockyard  438376  718990
+## 36                                    Bodleian Libraries  245281  711478
+## 37                         National War Museum Edinburgh  277359  699178
+## 38                   The Royal Opera House Covent Garden  277450  697001
+## 39                                 Royal Academy of Arts  468693  695968
+## 40                                            IWM London  320542  684909
+## 41           Oxford University Museum of Natural History  268500  675557
+## 42                         The Royal Shakespeare Company  102396  672487
+## 43                                Liverpool World Museum  330593  669684
+## 44                                          Eden Project  577929  658084
+## 45                                          Tower Bridge  182284  648001
+## 46                                   Shakespeare&#39;s Globe  254250  629330
+## 47                                       Titanic Belfast  225606  624294
+## 48                                          York Minster  266183  620591
+## 49                               Old Royal Naval College  281499  617843
+## 50                                        Sherwood Pines  705007  612804
+## 51                                   Museum of Liverpool  251186  605926
+## 52                                         Edinburgh Zoo  632122  601285
+## 53                                            Chatsworth  540927  578745
+## 54                               National Railway Museum  346313  572607
+## 55                     Knowsley Safari and Knowsley Hall      NA  565772
+## 56                                  Canterbury Cathedral  336928  551767
+## 57                                          Clumber Park  448588  541351
+## 58                                        Attingham Park  597154  538394
+## 59                                              Cliveden  553041  536672
+## 60                                  Hampton Court Palace  376107  527899
+## 61                                         Dunham Massey  522346  525819
+## 62                            High Lodge Thetford Forest  537098  525685
+## 63                            Merseyside Maritime Museum  208959  520328
+## 64                                RHS Garden Bridgewater  325802  520159
+## 65                                     The Design Museum      NA  511863
+## 66                                           Calke Abbey  407292  486375
+## 67                                The Burrell Collection      NA  482984
+## 68                    Westonbirt, The National Arboretum  607040  477495
+## 69                                       Delamere Forest      NA  472986
+## 70                                RHS Garden Harlow Carr  401727  461904
+## 71                            Jeskyns Community Woodland  878626  447116
+## 72                                          Leeds Castle  389363  445604
+## 73                                    Haldon Forest Park      NA  443553
+## 74                                   Churchill War Rooms   95313  438092
+## 75                                  RHS Garden Hyde Hall  410846  434347
+## 76                                       Giants Causeway  151758  421713
+## 77                                 Foutains Abbey Estate  364057  420403
+## 78                                       Stirling Castle  148581  418180
+## 79                     Birmingham Museum and Art Gallery      NA  409784
+## 80                            Bedgebury National Pinetum  526221  409771
+## 81                                          Beechenhurst      NA  409219
+## 82                                        Wendover Woods      NA  406302
+## 83                                        Tate Liverpool  211153  405218
+## 84                     The Royal Air Force Museum London  214730  400643
+## 85                                   Glenfinnan Monument  292981  398130
+## 86                                         Ulster Museum  127451  386539
+## 87                                             Wakehurst  411828  384415
+## 88                   The Royal Air Force Museum Midlands      NA  382831
+## 89                                      Museum of London  141835  381211
+## 90                                    St Michael&#39;s Mount  429237  375885
+## 91                                             Stourhead  320521  375197
+## 92                                           Tyntesfield  305813  365925
+## 93                                          Belton House  340290  361270
+## 94                                         Kingston Lacy  297312  360388
+## 95                                       Urquhart Castle  107073  357154
+## 96                                The Fitzwilliam Museum   98760  356028
+## 97                           Science and Industry Museum  190388  352278
+## 98                                  Cannock Chase Forest      NA  352198
+## 99                                                Nymans  296586  348491
+## 100                                         Dalby Forest      NA  347443
+## 101                                          IWM Duxford  221158  346658
+## 102                  Cambridge University Botanic Garden  290753  345251
+## 103                                       Anglesey Abbey  310940  345209
+## 104                               Glencoe Visitor Centre  129829  344896
+## 105                                              Wimpole  294808  343767
+## 106                                    Alice Holt Forest      NA  340973
+## 107                              London Transport Museum  168978  338249
+## 108                                             Polesden  326943  333200
+## 109                                             Beaulieu  276888  327026
+## 110                                           Mottisfont  240195  320976
+## 111                                Gallery of Modern Art   75758  318620
+## 112                                    Leeds Art Gallery  102302  308147
+## 113              Scottish National Gallery of Modern Art  152086  303678
+## 114                              Palace of Holyroodhouse      NA  301478
+## 115                                  Wellcome Collection      NA  300213
+## 116                          National Memorial Arboretum  271979  299344
+## 117                                   Pitt Rivers Museum  136351  299218
+## 118                                          Wyre Forest      NA  297335
+## 119                                     Durham Cathedral  251456  296406
+## 120                                             Ickworth  263273  294134
+## 121                                    Kensington Palace  196355  294043
+## 122                                       Sheffield Park  296195  293726
+## 123                                 Harewood House Trust  247761  292566
+## 124                                      Tintagel Castle  267094  279608
+## 125                                           V&amp;A Dundee  149763  278426
+## 126                                            Newhailes   65470  272737
+## 127                                        Salcey Forest      NA  271079
+## 128                                       Bodnant Garden  239790  270302
+## 129                                        Castle Howard  232537  266998
+## 130                                              Osborne  221347  266370
+## 131                         International Slavery Museum  144446  265360
+## 132                                          Shugborough  234967  256236
+## 133                                    Glasgow Cathedral   33788  256001
+## 134                                              Gibside  239972  248578
+## 135                                     Quarry Bank Mill  189404  247716
+## 136                                    Leeds City Museum   89076  242638
+## 137                                               Croome  224367  241819
+## 138                                             Hardwick  194822  240297
+## 139                                      Cardinham Woods      NA  236682
+## 140                                         Corfe Castle  204185  235987
+## 141                                      Cragside Estate  226536  231188
+## 142                                           Wallington  210215  229995
+## 143                                  RHS Garden Rosemoor  233198  228047
+## 144                                    Whinlatter Forest      NA  227355
+## 145                                            Kedleston  211182  226225
+## 146                          Forest of Dean Cycle Centre      NA  225159
+## 147                                         Dover Castle  148479  224782
+## 148                                            Chartwell  196700  223877
+## 149                                       WWT Slimbridge  185726  223631
+## 150                                 Bletchley Park Trust  124821  223570
+## 151                   Scottish National Portrait Gallery   82416  222977
+## 152                                        Mount Stewart  214870  215619
+## 153                                            IWM North  105131  215245
+## 154                                 Stowe Gardens &amp; Park  223897  211735
+## 155                        Culzean Castle &amp; Country Park  228911  209002
+## 156                                            Lotherton  223884  208771
+## 157                         Museum of London (Docklands)   72464  206337
+## 158                 Oxford Botanic Gardens and Arboretum  173469  206198
+## 159                                 Speke Hall Liverpool  141113  205910
+## 160                                           Charlecote  194304  205668
+## 161                          Great North Museum: Hancock      NA  204823
+## 162                                            Baddesley  183611  204623
+## 163                                               Dyrham  204473  202266
+## 164                 Thinktank, Birmingham Science Museum   85487  201551
+## 165                                   Walker Art Gallery   80688  199171
+## 166                             Hanbury Hall and Gardens  174654  199039
+## 167                                            Killerton  161356  197710
+## 168                                             Packwood  163005  194676
+## 169                  Salisbury Cathedral and Magna Carta   84921  194552
+## 170                                            Blickling  167633  191341
+## 171                                         Tate St Ives  128366  189249
+## 172                                                Knole  103340  189044
+## 173                                       Haughmond Hill      NA  187629
+## 174                                               Lacock  124418  187083
+## 175                       Robert Burns Birthplace Museum  141805  182196
+## 176                                         Whitby Abbey  144246  180744
+## 177                    National Science and Media Museum   95179  177847
+## 178                                           Trelissick  115353  177779
+## 179                               Lady Lever Art Gallery   62580  171430
+## 180                                Clifford&#39;s Tower York      NA  171024
+## 181                                          HMS Belfast   60035  167933
+## 182                                              Dunster  127745  167723
+## 183                         Audley End House and Gardens  167347  165875
+## 184                                           Lanhydrock  124419  162601
+## 185                                    Hamsterley Forest      NA  160929
+## 186                                     Discovery Museum      NA  160432
+## 187                                           Wrest Park  151249  158737
+## 188                                             The Vyne  169837  153090
+## 189                               Highland Wildlife Park  151443  152048
+## 190                              Culloden Visitor Centre   57778  149003
+## 191                                              Saltram  105900  148440
+## 192                                       Crathes Castle  138099  148174
+## 193                            Brunel&#39;s SS Great Britain   84583  147742
+## 194                                      People&#39;s Palace    3245  146389
+## 195                                            Grizedale      NA  139970
+## 196                                       Fineshade Wood      NA  136180
+## 197                       Natural History Museum (Tring)   52287  134208
+## 198                           Blists Hill Victorian Town      NA  132249
+## 199                                      Kirkstall Abbey   96165  132175
+## 200                            Walmer Castle and Gardens  103788  130516
+## 201                            Eltham Palace and Gardens   93085  128986
+## 202                                           WWT London  104836  128739
+## 203                                      WWT Martin Mere  122552  127708
+## 204                            History of Science Museum   31911  126517
+## 205             Kenilworth Castle and Elizabethan Garden  103922  119082
+## 206                                         Holkham Hall   84560  116022
+## 207                                    Laing Art Gallery      NA  111017
+## 208       1066 Battle of Hastings, Abbey and Battlefield   91690  108113
+## 209                                   Carisbrooke Castle   90974  104891
+## 210                         University Museum of Zoology   46888  103604
+## 211                          Brodsworth Hall and Gardens   93614  100545
+## 212                                        Kettle&#39;s Yard   37966  100168
+## 213                        National Museum of Rural Life   60888   99795
+## 214                                          Hicks Lodge      NA   95769
+## 215                                        St Abb&#39;s Head   58862   92898
+## 216                                       Carrick-a-Rede      NA   92504
+## 217                             Shakespeare&#39;s Birthplace   48154   92417
+## 218                                           Skara Brae   38032   90234
+## 219                                      Bolsover Castle      NA   89252
+## 220              Housesteads Roman Fort - Hadrian&#39;s Wall      NA   87854
+## 221                                         Pollok House    8774   86829
+## 222                                   Framlingham Castle      NA   84599
+## 223                                       Burghley House   55289   83603
+## 224                                   Ulster Folk Museum   54925   83340
+## 225             The Monument to The Great Fire of London    9804   81291
+## 226                            Gisburn Forest and Stocks      NA   80566
+## 227                   South Sheilds Museum &amp; Art Gallery      NA   79588
+## 228                                           Locomotion   55516   78317
+## 229                                          WWT Arundel   61163   78064
+## 230                            Ulster American Folk Park   62173   75493
+## 231                                     Pendennis Castle      NA   74850
+## 232               Museum of Archaeology and Anthropology   25606   74752
+## 233                                   Scarborough Castle      NA   73685
+## 234                                              Kenwood      NA   71877
+## 235                                         Fyvie Castle   61775   69513
+## 236                    Sedgwick Museum of Earth Sciences   21944   67177
+## 237                                         Sudbury Hall      NA   66690
+## 238                       Belsay Hall Castle and Gardens      NA   65611
+## 239                             Witley Court and Gardens      NA   65527
+## 240                                       WWT Washington   49162   65395
+## 241                                 Corrieshalloch Gorge   70591   65279
+## 242                                 Fleet Air Arm Museum   46254   64319
+## 243                                         WWT Llanelli   44573   63565
+## 244                        Brodick Castle &amp; Country Park   47394   63255
+## 245                            National Museum of Flight   53148   61962
+## 246                        Kielder Water and Forest Park      NA   59311
+## 247          Balmacara Estate &amp; Lochalsh Woodland Garden   50876   58227
+## 248                                     Blackness Castle   12663   58168
+## 249                                   Lindisfarne Priory      NA   57981
+## 250                                          Fort George   35427   57390
+## 251                                        Brodie Castle   52788   55690
+## 252                                         Doune Castle    3171   55484
+## 253                                           Iona Abbey   14234   55256
+## 254                                     Warkworth Castle      NA   54776
+## 255                                           Ben Lomond   49550   54649
+## 256                                     Grey Mare&#39;s Tail   43478   54453
+## 257                                     Inverewe Gardens   42104   53517
+## 258                     Beeston Castle and Woodland Park      NA   52282
+## 259                                       Rievaulx Abbey      NA   51580
+## 260               Pitmedden Garden &amp; Museum of Farm Life   47275   51554
+## 261                                     Mar Lodge Estate   64479   51293
+## 262                                       Threave Garden   81981   50706
+## 263                              Ulster Transport Museum   34568   49760
+## 264 Guildhall Art Gallery and London&#39;s Roman Ampitheatre   37782   46423
+## 265                National Museum Royal Navy Hartlepool   29302   46179
+## 266                                   Abbey House Museum   21369   45118
+## 267                                      Falkland Palace   21537   44585
+## 268                                        Castle Fraser   47874   42331
+## 269                              Anne Hathaway&#39;s Cottage   23199   42294
+## 270                                          Drum Castle   38399   42179
+## 271                                     Gladstone&#39;s Land   11423   41049
+## 272                       Staffa National Nature Reserve   17792   40413
+## 273                                     Tantallon Castle   13342   40202
+## 274                                Dawyck Botanic Garden   33943   39672
+## 275                                        Melrose Abbey   17924   38009
+## 276                                           Aston Hall   17789   37490
+## 277                                            Hermitage      NA   36938
+## 278                                            Enginuity      NA   36602
+## 279                                     WWT Castle Espie   33257   35734
+## 280                       The Iron Bridge and Toll House      NA   35645
+## 281                                 Segedunum Roman Fort      NA   34994
+## 282                                           Hill House   22293   33740
+## 283                              Shakespeare&#39;s New Place   17886   33661
+## 284                               Benmore Botanic Garden   30424   33483
+## 285                                         House of Dun   22647   31611
+## 286                                    Dunfermline Abbey    6634   29408
+## 287                                    Craigievar Castle   13181   29222
+## 288                                   Craigmillar Castle   11876   28958
+## 289                                 Logan Botanic Garden   31789   27663
+## 290                                  Museum of the Gorge      NA   27581
+## 291                          Bannockburn Heritage Centre   13994   27512
+## 292                                         Sudley House    7516   27157
+## 293        The St Mungo Museum of Religious Life And Art      NA   27095
+## 294                                                 Iona    6157   26982
+## 295                                        Temple Newsam   10782   26753
+## 296                                           Leith Hall   17979   26337
+## 297                                           WWT Welney   14495   26324
+## 298                             Stephenson Steam Railway      NA   24514
+## 299                                             Goatfell   59950   23760
+## 300                                     The Polar Museum    6290   23705
+## 301                                      Elgin Cathedral    5377   22627
+## 302                                     Greenbank Garden   18210   21937
+## 303                                       Culross Palace   10733   21894
+## 304                            Ben Lawers Visitor Centre   35812   20971
+## 305                                           Barry Mill    7561   20462
+## 306                                        Sarehole Mill   16825   20462
+## 307                                  Dunstaffnage Castle    4842   20188
+## 308                      Arbeia South Sheilds Roman Fort      NA   19568
+## 309                                  Shipley Art Gallery      NA   19203
+## 310                         Coalbrookdale Museum of Iron      NA   18508
+## 311                                       Georgian House    7626   18483
+## 312                                       Tenement House    4276   18172
+## 313                                       Hatton Gallery      NA   17686
+## 314                                      Branklyn Garden   17487   17318
+## 315                         Killiecrankie Visitor Centre      NA   15946
+## 316                              Leeds Industrial Museum    8109   15812
+## 317                                          Haddo House    6160   14650
+## 318                                Coalport China Museum      NA   13279
+## 319                                      Geilston Garden   13360   12970
+## 320                                        Crarae Garden      NA   12024
+## 321                                Jackfield Tile Museum      NA   11820
+## 322                                        Kellie Castle    9621   11670
+## 323                                       Blakesley Hall    5652   11407
+## 324                             Broughton House &amp; Garden    3950   11140
+## 325                                    Thwaite Watermill    9477   11114
+## 326                                       Kintail Estate   12186   10039
+## 327             Whipple Museum of the History of Science    2263    9882
+## 328                                     WWT Caerlaverock    7931    9021
+## 329                                           Soho House    3509    8457
+## 330                      Museum of Classical Archaeology    3721    8132
+## 331                                      Abertarff House      NA    7296
+## 332                                                Canna    1352    6205
+## 333                                          Alloa Tower    4574    5965
+## 334                                       Hill of Tarvit    2742    5642
+## 335                                             St Kilda    4432    5614
+## 336                                       Holmwood House    1577    4586
+## 337                               Leeds Discovery Centre    1052    4132
+## 338                      Glasgow Museums Resource Centre      NA    3859
+## 339                                Hugh Miller&#39;s Cottage      NA    3842
+## 340                                       Malleny Garden    5030    3187
+## 341                                        Weoley Castle      NA    3149
+## 342                     Preston Mill &amp; Phantassie Doocot    1835    2793
+## 343                                         Darby Houses      NA    2543
+## 344                                Inveresk Lodge Garden    6004    2291
+## 345                                  Barrie&#39;s Birthplace    1257    1747
+## 346                             Museum Collection Centre      NA    1601
+## 347                        Robert Smail&#39;s Printing Works      NA    1337
+## 348                      Museum of the Jewellery Quarter      NA    1130
+##     admission setting                   region
+## 1        Free       O               South East
+## 2        Free       I                   London
+## 3        Free       I                   London
+## 4        Free       I                   London
+## 5        Free       I                   London
+## 6        Free       I                   London
+## 7        Free       I                   London
+## 8        Free       M                   London
+## 9        Free       I                   London
+## 10    Members       M                   London
+## 11       Free       I                 Scotland
+## 12    Members       M                   London
+## 13    Members       I                   London
+## 14    Members       O               South East
+## 15    Charged       I                   London
+## 16    Members       M                 Scotland
+## 17       Free       I                 Scotland
+## 18       Free       I                   London
+## 19       Free       I                 Scotland
+## 20       Free       I                   London
+## 21    Charged       I                   London
+## 22    Members       M                   London
+## 23       Free       O                 Scotland
+## 24    Members       O               South West
+## 25       Free       I                   London
+## 26       Free       I                 Scotland
+## 27    Charged       I               South West
+## 28    Charged       O               South West
+## 29       Free       O               South West
+## 30    Members       M               South East
+## 31       Free       M                   London
+## 32    Members       M               North East
+## 33    Members       O          East of England
+## 34       Free       I               South East
+## 35    Charged       M               South East
+## 36       Free       I               South East
+## 37       Free       I                 Scotland
+## 38    Charged       I                   London
+## 39    Members       I                   London
+## 40       Free       I                   London
+## 41       Free       I               South East
+## 42       Free       M            West Midlands
+## 43       Free       I               North West
+## 44    Charged       M               South West
+## 45    Charged       I                   London
+## 46    Members       M                   London
+## 47    Charged       I         Northern Ireland
+## 48    Charged       I Yorkshire and the Humber
+## 49       Free       M                   London
+## 50       Free       O            East Midlands
+## 51       Free       I               North West
+## 52    Members       M                 Scotland
+## 53    Members       M            East Midlands
+## 54       Free       I Yorkshire and the Humber
+## 55    Members       M               North West
+## 56    Members       I               South East
+## 57    Members       O            East Midlands
+## 58    Members       M            West Midlands
+## 59    Members       M               South East
+## 60    Members       M                   London
+## 61    Members       M               North West
+## 62       Free       O          East of England
+## 63       Free       I               North West
+## 64    Members       O               North West
+## 65       Free       I                   London
+## 66    Members       M            East Midlands
+## 67       Free       I                 Scotland
+## 68    Members       O               South West
+## 69       Free       O               North West
+## 70    Members       O Yorkshire and the Humber
+## 71       Free       O               South East
+## 72    Charged       M               South East
+## 73       Free       O               South West
+## 74    Members       I                   London
+## 75    Members       O          East of England
+## 76    Members       M         Northern Ireland
+## 77    Members       O Yorkshire and the Humber
+## 78    Members       M                 Scotland
+## 79       Free       I            West Midlands
+## 80       Free       O               South East
+## 81       Free       O               South West
+## 82       Free       O               South East
+## 83       Free       I               North West
+## 84       Free       I                   London
+## 85    Members       M                 Scotland
+## 86       Free       I         Northern Ireland
+## 87    Members       O               South East
+## 88       Free       I            West Midlands
+## 89       Free       I                   London
+## 90    Members       M               South West
+## 91    Members       M               South West
+## 92    Members       M               South West
+## 93    Members       M            East Midlands
+## 94    Members       M               South West
+## 95    Members       M                 Scotland
+## 96       Free       I          East of England
+## 97       Free       I               North West
+## 98       Free       O            West Midlands
+## 99    Members       M               South East
+## 100      Free       O Yorkshire and the Humber
+## 101   Members       M          East of England
+## 102   Members       O          East of England
+## 103   Members       M          East of England
+## 104      Free       M                 Scotland
+## 105   Members       M          East of England
+## 106      Free       O               South East
+## 107   Charged       I                   London
+## 108   Members       M               South East
+## 109   Charged       M               South East
+## 110   Members       M               South East
+## 111      Free       I                 Scotland
+## 112      Free       I Yorkshire and the Humber
+## 113      Free       I                 Scotland
+## 114   Charged       I                 Scotland
+## 115      Free       I                   London
+## 116      Free       O            West Midlands
+## 117      Free       I               South East
+## 118      Free       O            West Midlands
+## 119      Free       I               North East
+## 120   Members       M          East of England
+## 121   Members       I                   London
+## 122   Members       O               South East
+## 123   Members       M Yorkshire and the Humber
+## 124   Members       O               South West
+## 125      Free       I                 Scotland
+## 126   Members       M                 Scotland
+## 127      Free       O          East of England
+## 128   Members       O                    Wales
+## 129   Members       M Yorkshire and the Humber
+## 130   Members       M               South East
+## 131      Free       I               North West
+## 132   Members       M            West Midlands
+## 133      Free       I                 Scotland
+## 134   Members       O               North East
+## 135   Members       M               North West
+## 136      Free       I Yorkshire and the Humber
+## 137   Members       M            West Midlands
+## 138   Members       M               North East
+## 139      Free       O               South West
+## 140   Members       O               South West
+## 141   Members       M               North East
+## 142   Members       M               North East
+## 143   Members       O               South West
+## 144      Free       O               North West
+## 145   Members       M            East Midlands
+## 146      Free       O               South West
+## 147   Members       M               South East
+## 148   Members       M               South East
+## 149   Members       O               South West
+## 150   Members       M               South East
+## 151      Free       I                 Scotland
+## 152   Members       M         Northern Ireland
+## 153      Free       I               North West
+## 154   Members       O               South East
+## 155   Members       M                 Scotland
+## 156   Charged       M Yorkshire and the Humber
+## 157      Free       I                   London
+## 158   Members       O               South East
+## 159   Members       M               North West
+## 160   Members       M            West Midlands
+## 161      Free       I               North East
+## 162   Members       M            West Midlands
+## 163   Members       M               South West
+## 164   Members       M            West Midlands
+## 165      Free       I               North West
+## 166   Members       M            West Midlands
+## 167   Members       M               South West
+## 168   Members       M            West Midlands
+## 169   Charged       I               South West
+## 170   Members       M          East of England
+## 171      Free       I               South West
+## 172   Members       M               South East
+## 173      Free       O            West Midlands
+## 174   Members       M               South West
+## 175   Members       I                 Scotland
+## 176   Members       M               North East
+## 177      Free       I Yorkshire and the Humber
+## 178   Members       M               South West
+## 179      Free       I               North West
+## 180   Members       M Yorkshire and the Humber
+## 181   Members       I                   London
+## 182   Members       M               South West
+## 183   Members       M          East of England
+## 184   Members       M               South West
+## 185      Free       O               North East
+## 186      Free       I               North East
+## 187   Members       O          East of England
+## 188   Members       M               South East
+## 189   Members       O                 Scotland
+## 190   Members       M                 Scotland
+## 191   Members       M               South West
+## 192   Members       M                 Scotland
+## 193   Charged       I               South West
+## 194      Free       I                 Scotland
+## 195      Free       O               North West
+## 196      Free       O          East of England
+## 197      Free       I          East of England
+## 198   Charged       O            West Midlands
+## 199   Members       O Yorkshire and the Humber
+## 200   Members       M               South East
+## 201   Members       M                   London
+## 202   Members       O                   London
+## 203   Members       O               North West
+## 204      Free       I               South East
+## 205   Members       O            West Midlands
+## 206   Charged       M          East of England
+## 207      Free       I               North East
+## 208   Members       O               South East
+## 209   Members       O               South East
+## 210      Free       I          East of England
+## 211   Members       M Yorkshire and the Humber
+## 212   Charged       I          East of England
+## 213   Members       M                 Scotland
+## 214      Free       O            East Midlands
+## 215      Free       O                 Scotland
+## 216   Members       O         Northern Ireland
+## 217   Charged       I            West Midlands
+## 218   Members       M                 Scotland
+## 219   Members       M            East Midlands
+## 220   Members       O               North East
+## 221   Members       I                 Scotland
+## 222   Members       M          East of England
+## 223   Charged       M          East of England
+## 224   Members       O         Northern Ireland
+## 225   Charged       I                   London
+## 226      Free       O               North West
+## 227      Free       I               North East
+## 228      Free       I               North East
+## 229   Members       O               South East
+## 230   Members       O         Northern Ireland
+## 231   Members       M               South West
+## 232      Free       I          East of England
+## 233   Members       O Yorkshire and the Humber
+## 234      Free       I                   London
+## 235   Members       M                 Scotland
+## 236      Free       I          East of England
+## 237   Members       M            East Midlands
+## 238   Members       M               North East
+## 239   Members       O            West Midlands
+## 240   Members       O               North East
+## 241      Free       O                 Scotland
+## 242   Charged       I               South West
+## 243   Members       O                    Wales
+## 244   Members       M                 Scotland
+## 245   Members       M                 Scotland
+## 246      Free       O               North East
+## 247      Free       O                 Scotland
+## 248   Members       M                 Scotland
+## 249   Members       O               North East
+## 250   Members       M                 Scotland
+## 251   Members       M                 Scotland
+## 252   Members       M                 Scotland
+## 253   Members       M                 Scotland
+## 254   Members       O               North East
+## 255      Free       O                 Scotland
+## 256      Free       O                 Scotland
+## 257   Members       O                 Scotland
+## 258   Members       O               North West
+## 259   Members       O Yorkshire and the Humber
+## 260   Members       O                 Scotland
+## 261      Free       O                 Scotland
+## 262   Members       O                 Scotland
+## 263   Members       I         Northern Ireland
+## 264      Free       I                   London
+## 265   Charged       M               North East
+## 266   Charged       I Yorkshire and the Humber
+## 267   Members       M                 Scotland
+## 268   Members       M                 Scotland
+## 269   Charged       M            West Midlands
+## 270   Members       M                 Scotland
+## 271   Members       I                 Scotland
+## 272      Free       O                 Scotland
+## 273      Free       M                 Scotland
+## 274   Charged       O                 Scotland
+## 275   Members       M                 Scotland
+## 276   Members       M            West Midlands
+## 277      Free       O                 Scotland
+## 278   Charged       I            West Midlands
+## 279   Members       O         Northern Ireland
+## 280      Free       I            West Midlands
+## 281   Members       M               North East
+## 282   Members       I                 Scotland
+## 283   Charged       M            West Midlands
+## 284   Charged       O                 Scotland
+## 285   Members       M                 Scotland
+## 286      Free       M                 Scotland
+## 287   Members       M                 Scotland
+## 288   Members       M                 Scotland
+## 289   Charged       O                 Scotland
+## 290      Free       I            West Midlands
+## 291   Members       I                 Scotland
+## 292      Free       I               North West
+## 293      Free       I                 Scotland
+## 294      Free       O                 Scotland
+## 295   Charged       M Yorkshire and the Humber
+## 296   Members       M                 Scotland
+## 297   Members       O          East of England
+## 298   Members       M               North East
+## 299      Free       O                 Scotland
+## 300      Free       I          East of England
+## 301   Members       M                 Scotland
+## 302   Members       O                 Scotland
+## 303   Members       I                 Scotland
+## 304      Free       O                 Scotland
+## 305   Members       I                 Scotland
+## 306   Members       M            West Midlands
+## 307   Members       M                 Scotland
+## 308      Free       M               North East
+## 309      Free       I               North East
+## 310   Charged       I            West Midlands
+## 311   Members       I                 Scotland
+## 312   Members       I                 Scotland
+## 313      Free       I               North East
+## 314   Members       O                 Scotland
+## 315      Free       O                 Scotland
+## 316   Charged       I Yorkshire and the Humber
+## 317   Members       M                 Scotland
+## 318   Charged       I            West Midlands
+## 319   Members       O                 Scotland
+## 320   Members       M                 Scotland
+## 321   Charged       I            West Midlands
+## 322   Members       M                 Scotland
+## 323   Members       M            West Midlands
+## 324   Members       M                 Scotland
+## 325   Charged       M Yorkshire and the Humber
+## 326      Free       O                 Scotland
+## 327      Free       I          East of England
+## 328   Members       O                 Scotland
+## 329   Members       M            West Midlands
+## 330      Free       I          East of England
+## 331      Free       I                 Scotland
+## 332      Free       O                 Scotland
+## 333   Members       I                 Scotland
+## 334   Members       I                 Scotland
+## 335      Free       O                 Scotland
+## 336   Members       I                 Scotland
+## 337      Free       I Yorkshire and the Humber
+## 338      Free       I                 Scotland
+## 339   Members       I                 Scotland
+## 340   Members       O                 Scotland
+## 341      Free       O            West Midlands
+## 342   Members       O                 Scotland
+## 343      Free       I            West Midlands
+## 344   Members       O                 Scotland
+## 345   Members       I                 Scotland
+## 346      Free       I            West Midlands
+## 347   Members       I                 Scotland
+## 348   Members       I            West Midlands</code></pre>
 <div id="exercise-c." class="section level3">
 <h3>Exercise c.</h3>
 <p><em>What are the top 10 most visited attractions in 2021?</em></p>
-<pre class="r"><code>#visitors %&gt;% 
-#  arrange(____(____)) %&gt;%
-#  head(n = ____)</code></pre>
+<pre class="r"><code>visitors %&gt;% 
+  arrange(desc(n_2021)) %&gt;%
+  head(n = 10)</code></pre>
+<pre><code>##                                   attraction  n_2021  n_2022 admission setting
+## 1       The Crown Estate, Windsor Great Park 5400000 5636844      Free       O
+## 2                  Royal Botanic Gardens Kew 1963171 1963885   Members       M
+## 3  Natural History Museum (South Kensington) 1571413 4654608      Free       I
+## 4                          RHS Garden Wisley 1410785 1494709   Members       O
+## 5                         The British Museum 1327120 4097253      Free       I
+## 6                                Tate Modern 1156037 3883160      Free       I
+## 7                             Somerset House  984978 2346580      Free       M
+## 8                             Science Museum  955873 2334930      Free       I
+## 9                 Jeskyns Community Woodland  878626  447116      Free       O
+## 10                      V&amp;A South Kensington  857742 2370261      Free       I
+##        region
+## 1  South East
+## 2      London
+## 3      London
+## 4  South East
+## 5      London
+## 6      London
+## 7      London
+## 8      London
+## 9  South East
+## 10     London</code></pre>
 </div>
 </div>
 <div id="question-4" class="section level2">
@@ -434,22 +1182,24 @@ the data set by <code>region</code>.</em></p>
 <p><em>What is the admission charge for the
 <code>&quot;National Museum of Scotland&quot;</code>?</em></p>
 <pre class="r"><code>visitors %&gt;% filter(attraction == &quot;National Museum of Scotland&quot;)</code></pre>
-<pre><code>## # A tibble: 1 × 6
-##   attraction                  n_2021  n_2022 admission setting region  
-##   &lt;chr&gt;                        &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;     &lt;chr&gt;   &lt;chr&gt;   
-## 1 National Museum of Scotland 660741 1973751 Free      I       Scotland</code></pre>
+<pre><code>##                    attraction n_2021  n_2022 admission setting   region
+## 1 National Museum of Scotland 660741 1973751      Free       I Scotland</code></pre>
 <div id="exercise-d." class="section level3">
 <h3>Exercise d.</h3>
 <p><em>Which attraction had exactly 565,772 visitors in 2022?</em></p>
-<pre class="r"><code>#visitors %&gt;% filter(___ == ____)</code></pre>
+<pre class="r"><code>visitors %&gt;% filter(n_2022 == 565772)</code></pre>
+<pre><code>##                          attraction n_2021 n_2022 admission setting     region
+## 1 Knowsley Safari and Knowsley Hall     NA 565772   Members       M North West</code></pre>
 </div>
 <div id="exercise-e." class="section level3">
 <h3>Exercise e.</h3>
 <p><em>How many attraction had more than 1 million visitors in
 2022?</em></p>
-<pre class="r"><code>#visitors %&gt;% 
-#  filter(____) %&gt;%
-#  count()</code></pre>
+<pre class="r"><code>visitors %&gt;% 
+  filter(n_2022 &gt; 1000000) %&gt;%
+  count()</code></pre>
+<pre><code>##    n
+## 1 22</code></pre>
 </div>
 </div>
 <div id="question-5" class="section level2">
@@ -466,28 +1216,30 @@ visitors in 2022?</em></p>
     n_2022 &gt;= 100000
     ) %&gt;%
   count()</code></pre>
-<pre><code>## # A tibble: 1 × 1
-##       n
-##   &lt;int&gt;
-## 1     3</code></pre>
+<pre><code>##   n
+## 1 3</code></pre>
 <div id="exercise-f." class="section level3">
 <h3>Exercise f.</h3>
 <p><em>How many attractions had between 50,000 and 100,000 visitors in
 2022?</em></p>
-<pre class="r"><code>#visitors %&gt;% 
-#  ____(
-#    ______,
-#    ______ ) %&gt;%
-#  count()</code></pre>
+<pre class="r"><code>visitors %&gt;% 
+  filter(
+    n_2022 &gt;= 50000,
+    n_2022 &lt;= 100000 ) %&gt;%
+  count()</code></pre>
+<pre><code>##    n
+## 1 50</code></pre>
 </div>
 <div id="exercise-g." class="section level3">
 <h3>Exercise g.</h3>
 <p><em>How many regions have more than 50 tourist attraction in the data
 set? (Hint: You will need to tabulate the data before
 filtering.)</em></p>
-<pre class="r"><code>#visitors %&gt;% 
-#  _____(region) %&gt;%
-#  filter(______)</code></pre>
+<pre class="r"><code>visitors %&gt;% 
+  count(region) %&gt;%
+  filter(n &gt; 50)</code></pre>
+<pre><code>##     region  n
+## 1 Scotland 97</code></pre>
 </div>
 </div>
 </div>
@@ -502,26 +1254,27 @@ attractions?</em></p>
     mean_2022 = mean(n_2022),
     med_2022 = median(n_2022)
   )</code></pre>
-<pre><code>## # A tibble: 1 × 2
-##   mean_2022 med_2022
-##       &lt;dbl&gt;    &lt;dbl&gt;
-## 1   351942.  184640.</code></pre>
+<pre><code>##   mean_2022 med_2022
+## 1    351942 184639.5</code></pre>
 <div id="exercise-h." class="section level3">
 <h3>Exercise h.</h3>
 <p><em>Perform the same calculation for the 2021 admissions
 data.</em></p>
-<pre class="r"><code>#visitors %&gt;% 
-#  ______(
-#    __________,
-#    __________
-#  )</code></pre>
+<pre class="r"><code>visitors %&gt;% 
+  summarise(
+    mean_2021 = mean(n_2021, na.rm =TRUE),
+    med_2021 = median(n_2021, na.rm = TRUE)
+  )</code></pre>
+<pre><code>##   mean_2021 med_2021
+## 1  232430.7   129829</code></pre>
 <p>All values in the output are <code>NA</code>!</p>
 </div>
 <div id="exercise-i." class="section level3">
 <h3>Exercise i.</h3>
 <p><em>What does <code>NA</code> stand for and why are you getting this
 as your answer to the previous question.</em></p>
-<p><strong>Write your answer here</strong></p>
+<p>Not Available - some of the values given for n_2021 are not integers
+and therefore cannot be used in calculations</p>
 </div>
 <div id="exercise-j." class="section level3">
 <h3>Exercise j.</h3>
@@ -529,7 +1282,8 @@ as your answer to the previous question.</em></p>
 <code>median()</code> commands to see what the input argument
 <code>na.rm</code> does. Edit your code from exercise h so that it
 computes the summary statistics where data is available.</em></p>
-<p><strong>Write your answer here</strong></p>
+<p>Its advises the computer to ignore all entries where there is no
+valid data for the specified variable</p>
 </div>
 </div>
 <div id="question-7" class="section level2">
@@ -548,13 +1302,12 @@ visitor numbers in 2022?</em></p>
 ## 1 I         488522.  204823 
 ## 2 M         284800.  198374.
 ## 3 O         272077.  127708</code></pre>
-<div id="exercise-k." class="section level3">
-<h3>Exercise k.</h3>
 <p><em>Observe in question 6 that the mean statistics across all
 settings are much larger than the corresponding median statistics.
 Discuss in your group what this suggests about the data.</em></p>
-<p><strong>Write your answer here</strong></p>
-</div>
+<p>This suggests that the data consists of some large events which bring
+the average up significantly, but is primarily composed of smaller
+events than these.</p>
 </div>
 <div id="question-8" class="section level2">
 <h2>Question 8</h2>
@@ -588,8 +1341,13 @@ visitors_with_nations %&gt;%
 <p><em>How many tourist attractions are there in each of the 4 nations?
 From this, discuss in your group how reliable you think the
 inter-quartile estimates are.</em></p>
-<pre class="r"><code>#________ %&gt;%
-#  ______(_______)</code></pre>
+<pre class="r"><code>visitors_with_nations %&gt;%
+  count(nation)</code></pre>
+<pre><code>##             nation   n
+## 1          England 240
+## 2 Northern Ireland   9
+## 3         Scotland  97
+## 4            Wales   2</code></pre>
 </div>
 </div>
 </div>
@@ -599,7 +1357,19 @@ inter-quartile estimates are.</em></p>
 <h3>Exercise m.</h3>
 <p><em>Within each of the 4 nations, what is the proportion of tourist
 attractions that have free admission for all visitors?</em></p>
-<pre class="r"><code># Write your code here</code></pre>
+<pre class="r"><code>visitors_with_nations %&gt;%
+  count(nation, admission)</code></pre>
+<pre><code>##              nation admission   n
+## 1           England   Charged  33
+## 2           England      Free  93
+## 3           England   Members 114
+## 4  Northern Ireland   Charged   1
+## 5  Northern Ireland      Free   1
+## 6  Northern Ireland   Members   7
+## 7          Scotland   Charged   4
+## 8          Scotland      Free  34
+## 9          Scotland   Members  59
+## 10            Wales   Members   2</code></pre>
 </div>
 <div id="exercise-n." class="section level3">
 <h3>Exercise n.</h3>
